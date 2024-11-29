@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {toast} from "sonner";
-import { apiClinet } from "@/lib/api-client";
+import { apiClient } from "@/lib/api-client.js";
 
 const Auth = () => {
 
@@ -59,9 +59,9 @@ const Auth = () => {
                         </div>
                         <div className="flex items-center justify-center w-full">
                             <Tabs className="w-3/4">
-                                <TabsList className='bg-transparent rounded-none w-full'>
-                                    <TabsTrigger 
-                                        value="login" 
+                                <TabsList className='bg-transparent rounded-none w-full'>  
+                                    <TabsTrigger  // buttons to open up for info
+                                        value="login"  
                                         className="data-[state=active]:bg-transparent
                                          text-black text-opacity-90 border-b-2 rounded-none
                                           w-full data-[state=active]:text-black 
@@ -77,7 +77,7 @@ const Auth = () => {
                                          data-[state=active]:border-b-purple-500 
                                          p-3 transition-all duration-300">SignUp</TabsTrigger>
                                 </TabsList>
-                                <TabsContent className="flex flex-col gap-5 mt-10" 
+                                <TabsContent className="flex flex-col gap-5 mt-10" //login option pop
                                 value="login">
                                     <Input 
                                     placeholder="Email" 
@@ -97,7 +97,7 @@ const Auth = () => {
                                         Login
                                     </Button>
                                 </TabsContent>
-                                <TabsContent className="flex flex-col gap-5" 
+                                <TabsContent className="flex flex-col gap-5"  // signup option pop
                                 value="signup">
                                 <Input 
                                     placeholder="Email" 
@@ -118,10 +118,10 @@ const Auth = () => {
                                     className="rounded-full p-6" 
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)} 
-                                    />
-                                    <Button className="rounded-full p-6" onClick={handleSignUp}>
+                                    />  
+                                    <Button className="rounded-full p-6" onClick={handleSignUp}>  
                                         Signup
-                                    </Button>
+                                    </Button> 
                                 </TabsContent>
                             </Tabs>
                         </div>
