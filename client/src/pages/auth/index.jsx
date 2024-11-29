@@ -7,6 +7,7 @@ import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {toast} from "sonner";
 import { apiClient } from "@/lib/api-client.js";
+import { SIGNUP_ROUTE } from "@/utils/constants";
 
 const Auth = () => {
 
@@ -22,7 +23,7 @@ const Auth = () => {
             return false;
         }
         if(!password.length){
-            toast.error("Passwrod is required");
+            toast.error("Password is required");
             return false;
         }       
         if(password !== confirmPassword){
@@ -39,7 +40,8 @@ const Auth = () => {
     
     const handleSignUp = async () => {
         if(validateSignup()) {
-            const response = await apiClient.post(SIGNUP_ROUTE, {emial, password}) ;
+            const response = await apiClient.post(SIGNUP_ROUTE, {email, password},{withCredentials:true});
+            console.log(SIGNUP_ROUTE); // debugging
             console.log({ response });
         }
     };
