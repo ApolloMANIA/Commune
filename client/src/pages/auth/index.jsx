@@ -40,7 +40,7 @@ const Auth = () => {
     
     const handleSignUp = async () => {
         if(validateSignup()) {
-            const response = await apiClient.post(SIGNUP_ROUTE, {email, password},{withCredentials:true});
+            const response = await apiClient.post(SIGNUP_ROUTE, {email, password});
             console.log(SIGNUP_ROUTE); // debugging
             console.log({ response });
         }
