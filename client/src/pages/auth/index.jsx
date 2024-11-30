@@ -10,13 +10,14 @@ import {toast} from "sonner";
 import { apiClient } from "@/lib/api-client.js";
 import { SIGNUP_ROUTE } from "@/utils/constants";
 import { LOGIN_ROUTE } from "@/utils/constants";
+import {useAppStore} from "@/store";
 
 const Auth = () => {
 
     //Input Components
 
     const navigate = useNavigate();
-    
+    const {setUserInfo} = useAppStore();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -55,6 +56,7 @@ const Auth = () => {
         if(validateLogin()) {
             const response = await apiClient.post(LOGIN_ROUTE, {email, password},{withCredentials:true});
             console.log(LOGIN_ROUTE); // debugging
+            setUserInfo(response.data.user);
             if(response.data.user.id){
                 if (response.data.user.profileSetup) navigate("/chat");
                 else navigate("/profile");
@@ -68,6 +70,7 @@ const Auth = () => {
             const response = await apiClient.post(SIGNUP_ROUTE, {email, password},{withCredentials:true});
             console.log(SIGNUP_ROUTE); // debugging
             if (response.status === 201) {
+                setUserInfo(response.data.user);
                 navigate("/profile");
             }
             console.log({ response });
