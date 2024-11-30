@@ -53,16 +53,36 @@ const Auth = () => {
     //Handle Click Events
 
     const handleLogin = async () => {
-        if(validateLogin()) {
-            const response = await apiClient.post(LOGIN_ROUTE, {email, password},{withCredentials:true});
-            console.log(LOGIN_ROUTE); // debugging
-            setUserInfo(response.data.user);
-            if(response.data.user.id){
-                if (response.data.user.profileSetup) navigate("/chat");
-                else navigate("/profile");
+        try {
+            if (validateLogin()) {
+              const response = await apiClient.post(LOGIN_ROUTE, { email, password }, { withCredentials: true });
+              console.log('Login Route:', LOGIN_ROUTE);
+              console.log('Login Response:', response);
+        
+              if (response.data.user) {
+                console.log('User Data:', response.data.user);
+                console.log('Profile Setup Status:', response.data.user.profileSetup);
+        
+                // Set user info in the store
+                setUserInfo(response.data.user);
+        
+                // Wait for the user info to be set before navigating
+                await new Promise((resolve) => setTimeout(resolve, 500));
+        
+                if (response.data.user.profileSetup) {
+                  console.log('Navigating to /chat');
+                  navigate('/chat');
+                } else {
+                  console.log('Navigating to /profile');
+                  navigate('/profile');
+                }
+              } else {
+                console.error('Invalid user data in login response');
+              }
             }
-            console.log({ response });
-        }
+          } catch (error) {
+            console.error('Login Error:', error);
+          }
     };
     
     const handleSignUp = async () => {
