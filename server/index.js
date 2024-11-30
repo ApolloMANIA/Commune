@@ -10,6 +10,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 const databaseURL = process.env.DATABASE_URL;
+const server = app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
 
 // for server communication
 // MVC
@@ -26,9 +29,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes)
 
-const server = app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
+
 
 mongoose.connect(databaseURL).then(() => console.log('Database has joined the chat.'))
 .catch(err => console.log(err.message));
