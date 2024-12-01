@@ -82,7 +82,7 @@ export const getUserInfo =async (request, response, next) => {
         }
         
         return response.status(200).json({user:{
-            user: {
+            
                 id: userData.id,
                 email: userData.email,
                 profileSetup: userData.profileSetup,
@@ -90,7 +90,7 @@ export const getUserInfo =async (request, response, next) => {
                 lastName: userData.lastName,
                 image: userData.image,
                 color: userData.color
-            },
+            
         },
     });
     } 

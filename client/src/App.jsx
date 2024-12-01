@@ -8,6 +8,7 @@ import { useAppStore } from "./store";
 import { GET_USER_INFO } from "./utils/constants";
 
 
+
 const PrivateRoute = ({children}) => {
   const {userInfo} = useAppStore();
   const isAuthenticated = !!userInfo;
