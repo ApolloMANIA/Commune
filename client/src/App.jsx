@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from "react"
+import React, { Children, useEffect, useState } from "react"
 import {Button} from '@/components/ui/button';
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/auth";
@@ -22,7 +22,7 @@ const AuthRoute = ({children}) => {
 
 const App = () => {
   const {userInfo,setUserInfo} = useAppStore();
-  const [loading, setLoading] = useState(True)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getUserData = async () => {
