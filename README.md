@@ -12,11 +12,7 @@ A modern chat application that allows users to communicate in real-time. This ap
 - **Media Sharing**: Share images, videos, and other files within the chat.
 - **Search**: Search through chat history and find specific messages.
   
-![project-1](https://github.com/user-attachments/assets/9fe02528-7660-4161-a2e0-2940007c51d2)
 
-![Screenshot 2024-08-06 202008](https://github.com/user-attachments/assets/068e1e26-27bb-4425-a780-527b87f5ec6b)
-
-![Screenshot 2024-08-06 201947](https://github.com/user-attachments/assets/f4292a7d-4c09-4788-8ba7-213d26e3a11c)
 
 ## Technologies Used
 
