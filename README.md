@@ -1,4 +1,4 @@
-# Synchronous ChatApp
+# Commune ChatApp
 
 A modern chat application that allows users to communicate in real-time. This application is built with a focus on simplicity, performance, and security.
 
