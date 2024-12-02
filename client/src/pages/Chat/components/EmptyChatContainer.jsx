@@ -16,7 +16,7 @@ const EmptyChatContainer = () => {
           Hi 
           <span className='text-purple-500'>! </span>
           Welcome to 
-          <span className='text-purple-500'> Synchronous </span>
+          <span className='text-purple-500'> Commune </span>
           Chat App
           <span className='text-purple-500' >.</span>
         </h3>
