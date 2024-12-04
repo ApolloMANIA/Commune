@@ -2,16 +2,17 @@ import { compare } from "bcrypt";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { renameSync, unlinkSync } from "fs";
+import { OAuth2Client } from 'google-auth-library';
 
 const maxAge = 3 * 24 * 60 * 60 * 1000 ; // 3 days
 
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const createToken = (email,userId) => {
     return jwt.sign({email,userId}, process.env.JWT_KEY, {
         expiresIn: maxAge,
     });
 }
-
 
 export const signup = async (req, res ,next) => {
     try{
@@ -189,4 +190,34 @@ export const logout = async (req, res ,next) => {
         return res.status(500).send("Internal server error");
     }
 }
+
+export const googleAuth = async (req, res) => {
+    const { token } = req.body;
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const { email, sub: googleId } = ticket.getPayload();
+        let user = await User.findOne({ googleId });
+        if (!user) {
+            user = await User.create({ email, googleId });
+        }
+        res.cookie("jwt", createToken(email, user.id), {
+            maxAge,
+            secure: true,
+            sameSite: "None",
+        });
+        return res.status(200).json({
+            user: {
+                id: user.id,
+                email: user.email,
+                profileSetup: user.profileSetup,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal Server Error");
+    }
+};
 

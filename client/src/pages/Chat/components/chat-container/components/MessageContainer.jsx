@@ -1,17 +1,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import apiClient from "@/lib/api-client";
+import { apiClient } from "@/lib/apiClient";
 import {
   FETCH_ALL_MESSAGES_ROUTE,
   GET_CHANNEL_MESSAGES,
   HOST,
   MESSAGE_TYPES,
-} from "@/lib/constants";
+} from "@/utils/constants";
 import { getColor } from "@/lib/utils";
-import { useAppStore } from "@/store";
+import { useAppstore } from "@/store";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import { IoMdArrowRoundDown } from "react-icons/io";
-import { IoCloseSharp } from "react-icons/io5";
+import {  IoCloseSharp } from "react-icons/io5";
 import { MdFolderZip } from "react-icons/md";
 
 const MessageContainer = () => {
@@ -25,7 +24,7 @@ const MessageContainer = () => {
     userInfo,
     setDownloadProgress,
     setIsDownloading,
-  } = useAppStore();
+  } = useAppstore();
   const messageEndRef = useRef(null);
 
   useEffect(() => {
@@ -164,7 +163,7 @@ const MessageContainer = () => {
                   className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
                   onClick={() => downloadFile(message.fileUrl)}
                 >
-                  <IoMdArrowRoundDown />
+                  
                 </span>
               </div>
             )}
@@ -229,7 +228,7 @@ const MessageContainer = () => {
                   className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
                   onClick={() => downloadFile(message.fileUrl)}
                 >
-                  <IoMdArrowRoundDown />
+                  
                 </span>
               </div>
             )}
@@ -286,7 +285,7 @@ const MessageContainer = () => {
               className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
               onClick={() => downloadFile(imageURL)}
             >
-              <IoMdArrowRoundDown />
+              
             </button>
             <button
               className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"

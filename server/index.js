@@ -6,6 +6,7 @@ import mongoose, { set } from 'mongoose';
 import authRoutes from './routes/AuthRoutes.js';
 import contactRoutes from './routes/ContactRoutes.js';
 import setupSocket from './socket.js';
+import googleAuthRoutes from './routes/GoogleAuthRoutes.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/contacts', contactRoutes);
+app.use('/auth/google', googleAuthRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
