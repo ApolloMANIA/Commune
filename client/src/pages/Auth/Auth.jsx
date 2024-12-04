@@ -9,6 +9,7 @@ import { apiClient } from '@/lib/apiClient'
 import { LOGIN_ROUTES, SIGNUP_ROUTES } from '@/utils/constants'
 import { useNavigate } from 'react-router-dom'
 import { useAppstore } from '@/store'
+import { GoogleLogin } from '@react-oauth/google'
 
 
 
@@ -86,7 +87,27 @@ const Auth = () => {
           }
         }
       }
-    };
+    }
+    const handleGoogleSuccess = async (response) => {
+      try {
+          const res = await apiClient.post('/auth/google/callback', {
+              token: response.credential,
+          }, { withCredentials: true });
+          console.log(res);
+          toast.success('Login successful!');
+          if (res.data.user.id) {
+              setUserInfo(res.data.user)
+              if (res.data.user.profileSetup) navigate('/chat');
+              else navigate('/profile');
+          }
+      } catch (error) {
+          toast.error('An error occurred during Google login');
+      }
+  }
+
+  const handleGoogleFailure = (response) => {
+      toast.error('Google login failed');
+  };
     return (
         <div className='h-screen w-screen flex items-center justify-center'>
           <div className='h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2'>
@@ -128,6 +149,10 @@ const Auth = () => {
                       onChange={(e) => setPassword(e.target.value)} 
                     />
                     <Button className="rounded-full p-6" onClick={handleLogin}>Login</Button>
+                    <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={handleGoogleFailure}
+                                />
                   </TabsContent>
                   <TabsContent className="flex flex-col gap-3" value="signup">
                     <Input 
