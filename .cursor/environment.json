@@ -1,0 +1,21 @@
+{
+  "name": "Commune Chat App",
+  "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
+  "terminals": [
+    {
+      "name": "server",
+      "command": "cd server && DATABASE_URL=\"mongodb://localhost:27017/Commune\" npm run dev",
+      "description": "Express + Socket.IO API on http://localhost:3000 (uses the local MongoDB instance)."
+    },
+    {
+      "name": "client",
+      "command": "cd client && npm run dev -- --host",
+      "description": "React + Vite dev server on http://localhost:5173."
+    }
+  ],
+  "ports": [
+    { "name": "client", "port": 5173 },
+    { "name": "server", "port": 3000 }
+  ]
+}
