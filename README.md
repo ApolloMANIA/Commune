@@ -1,90 +1,94 @@
-# Commune ChatApp
+# Commune
 
-A modern chat application that allows users to communicate in real-time. This application is built with a focus on simplicity, performance, and security.
+Real-time chat app with auth, profiles, and Socket.IO messaging.
+
+## Stack
+
+| Layer | Tech |
+| --- | --- |
+| Client | React, Vite, Tailwind CSS, Zustand, Socket.IO Client |
+| Server | Node.js, Express, MongoDB (Mongoose), JWT, bcrypt, Socket.IO |
+
+## Project layout
+
+```
+client/   # Vite React frontend (default port 5173)
+server/   # Express API + Socket.IO (default port 3000)
+```
+
+## Prerequisites
+
+- Node.js 18+
+- npm
+- MongoDB running locally (or a remote MongoDB URI)
+
+## Setup
+
+```bash
+git clone https://github.com/ApolloMANIA/Commune.git
+cd Commune
+```
+
+Install dependencies in both apps:
+
+```bash
+cd server && npm install && cd ..
+cd client && npm install && cd ..
+```
+
+### Environment
+
+**`server/.env`**
+
+```env
+PORT=3000
+JWT_KEY=your_jwt_secret
+ORIGIN=http://localhost:5173
+DATABASE_URL=mongodb://localhost:27017/Commune
+```
+
+**`client/.env`**
+
+```env
+VITE_SERVER_URL=http://localhost:3000
+```
+
+## Run
+
+Start MongoDB, then in two terminals:
+
+```bash
+# terminal 1 — API
+cd server
+npm run dev   # or: npm start
+
+# terminal 2 — UI
+cd client
+npm run dev
+```
+
+- App: [http://localhost:5173](http://localhost:5173)
+- API: [http://localhost:3000](http://localhost:3000)
 
 ## Features
 
-- **Real-Time Messaging**: Send and receive messages instantly.
-- **User Authentication**: Secure user login and registration.
-- **Profile Management**: Users can update their profiles and manage personal information.
-- **Group Chats**: Create and manage group chats with multiple users.
-- **Notifications**: Get notified of new messages and activity.
-- **Media Sharing**: Share images, videos, and other files within the chat.
-- **Search**: Search through chat history and find specific messages.
-  
+- Email/password signup and login (JWT + httpOnly cookies)
+- Profile setup (avatar upload, display name)
+- Contact search and DM-style chat
+- Real-time messaging over Socket.IO
 
+## Scripts
 
-## Technologies Used
+| Location | Command | Purpose |
+| --- | --- | --- |
+| `server/` | `npm start` | Run API |
+| `server/` | `npm run dev` | API with nodemon |
+| `client/` | `npm run dev` | Vite dev server |
+| `client/` | `npm run build` | Production build |
+| `client/` | `npm run preview` | Preview production build |
 
-- **Frontend**: 
-  - React.js
-  - Tailwind CSS
-  - Socket.IO (for real-time communication)
-  
-- **Backend**: 
-  - Node.js
-  - Express.js
-  - MongoDB (for database)
-  - JWT (for authentication)
-  - Bcrypt (for password hashing)
-  
-- **Deployment**:
-  - AWS (for hosting and storage)
+## Notes
 
-## Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- Node.js
-- npm or yarn
-- MongoDB
-- Docker (optional, for deployment)
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/chatapp.git
-   cd chatapp
-   ```
-
-2. **Clone the repository:**
-  ```bash
-    npm install
-    # or
-    yarn install
-  ```
-
-3. **Set up environment variables:**
-  - Create a .env file in the root directory and add the following:
-  ```bash
-  NODE_ENV=development
-  PORT=3000
-  MONGO_URI=your_mongodb_uri
-  JWT_SECRET=your_jwt_secret
-  ``` 
-4. **Run the application:**
-   ```bash
-     npm start
-     # or
-     yarn start
-   ```
-
-6. **Access the application:**
-   Open your browser and go to http://localhost:3000.
-   
-### Running Tests
-
-To run tests, use the following command:
-
-```bash
-npm test
-# or
-yarn test
-```
-## Contributing
-
-Contributions are welcome! If you'd like to contribute, please fork the repository, create a new branch, make your changes, and submit a pull request for review. Be sure to follow the project's coding standards and write tests for any new features or bug fixes.
-
+- Keep `ORIGIN` in `server/.env` aligned with the Vite URL (usually `http://localhost:5173`) or CORS will block requests.
+- `server/node_modules` should be installed on the machine that runs the API — native modules like `bcrypt` break if copied from another OS/arch.
+- Google OAuth UI is wired via `@react-oauth/google`; set a real `clientId` in `client/src/main.jsx` if you want that flow.

@@ -4,7 +4,11 @@ import Message from "./models/message.model.js";
 const setupSocket = (server) => {
     const io = new SocketIOServer(server, {
         cors: {
-            origin: process.env.ORIGIN,
+            origin: [
+                process.env.ORIGIN,
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+            ].filter(Boolean),
             methods: ['GET', 'POST'],
             credentials: true,
         },
@@ -24,22 +28,26 @@ const setupSocket = (server) => {
         }
     };
 
-    const sendMessage=async(message) => {
-        const senderSocketId = userSocketMap.get(message.sender);
-        const recipientSocketId = userSocketMap.get(message.recipient);
-        
-        const createdMessage = await Message.create(message);
-        
-        const messageData = await Message .findById(createdMessage._id)
-        .populate('sender',"id email firstName lastName image color")
-        .populate('recipient',"id email firstName lastName image color" );
+    const sendMessage = async (message) => {
+        try {
+            const senderSocketId = userSocketMap.get(message.sender);
+            const recipientSocketId = userSocketMap.get(message.recipient);
+            
+            const createdMessage = await Message.create(message);
+            
+            const messageData = await Message.findById(createdMessage._id)
+                .populate('sender', "email firstname lastname image color")
+                .populate('recipient', "email firstname lastname image color");
 
-        if (recipientSocketId) {
-            io.to(recipientSocketId).emit('recieveMessage', messageData);
-        }
+            if (recipientSocketId) {
+                io.to(recipientSocketId).emit('recieveMessage', messageData);
+            }
 
-        if (senderSocketId) {
-            io.to(senderSocketId).emit('recieveMessage', messageData);
+            if (senderSocketId) {
+                io.to(senderSocketId).emit('recieveMessage', messageData);
+            }
+        } catch (error) {
+            console.error('sendMessage failed:', error.message);
         }
     }
     
@@ -52,7 +60,7 @@ const setupSocket = (server) => {
         } else {
             console.log('User connected without userId');
         }
-        socket.on('sendMessage', sendMessage );
+        socket.on('sendMessage', sendMessage);
         socket.on('disconnect', () => disconnect(socket));
         
     });

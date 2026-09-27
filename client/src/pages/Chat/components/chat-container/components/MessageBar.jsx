@@ -10,7 +10,7 @@ import { useSocket } from '@/context/SocketContext'
 const MessageBar = () => {
   const emojiRef = useRef();
   const socket = useSocket();
-  const {selectedChatType, selectedChatData,userInfo } =useAppstore();
+  const {selectedChatType, selectedChatData, userInfo, pinDirectMessage } =useAppstore();
   const [message, setMessage] = useState('');
   const [emojiPickerOpen, setEmojiPickerOpen ] = useState(false);
   
@@ -31,14 +31,22 @@ const MessageBar = () => {
   }
   
   const handleSendMessage = async () => {
-    if(selectedChatType === 'contact' ) {
+    if (!socket) {
+      console.error('Socket not connected');
+      return;
+    }
+    if (!message.trim()) {
+      return;
+    }
+    if (selectedChatType === 'contact') {
       socket.emit('sendMessage', {
         sender: userInfo.id,
         content: message,
         recipient: selectedChatData._id,
         messageType: 'text',
-        fileUrl: undefined,
       });
+      pinDirectMessage(selectedChatData);
+      setMessage('');
     }
   }
   return (
@@ -49,7 +57,13 @@ const MessageBar = () => {
           className="flex-1 p-5 bg-transparent rounded-md focus:border-none focus:outline-none " 
           placeholder="Type a message..."
           value={message}
-          onChange={(e)=> setMessage(e.target.value) } 
+          onChange={(e)=> setMessage(e.target.value) }
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
         />
         <div className="relative ">
           <button className='text-neutral-400 focus:border-none focus:outline-none focus:text-white duration-300 transition-all hover:text-white ' 

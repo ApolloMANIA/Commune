@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ProfileInfo from './components/ProfileInfo';
 import NewDM from './components/NewDM';
+import DirectMessagesList from './components/DirectMessagesList';
+import { useAppstore } from '@/store';
 
 const ContactsContainer = () => {
+  const { userInfo, loadDirectMessages } = useAppstore();
+
+  useEffect(() => {
+    if (userInfo?.id) {
+      loadDirectMessages(userInfo.id);
+    }
+  }, [userInfo?.id, loadDirectMessages]);
+
   return (
     <div className='relative md:w-[35vw] lg:[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full' >
       <div className='pt-3' >
@@ -13,6 +23,7 @@ const ContactsContainer = () => {
             <Title title='Direct Messages' />
             <NewDM />
         </div>
+        <DirectMessagesList />
       </div>
       <div className='my-5' >
         <div className='flex items-center justify-between pr-10'>

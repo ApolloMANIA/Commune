@@ -7,9 +7,6 @@ import Profile from './pages/Profile/Profile'
 import { useAppstore } from './store'
 import { apiClient } from './lib/apiClient'
 import { GET_USER_INFO } from './utils/constants'
-import { GoogleLogin } from '@react-oauth/google';
-import { useGoogleLogin } from '@react-oauth/google';
-
 const PrivateRoute =({children})=>{
   const  {userInfo} = useAppstore();
   const   isAunthenticated = !!userInfo;
@@ -25,10 +22,6 @@ const AuthRoute =({children})=>{
 const App = () => {
   const {userInfo,setUserInfo} = useAppstore();
   const [loading, setLoading] = React.useState(true);
-
-  //const login = useGoogleLogin((
-    //  onSuccess: (tokenresponse) => console.log(tokenresponse),
-  // ));
 
   useEffect(()=>{
       const getUserData = async()=>{
@@ -76,20 +69,7 @@ const App = () => {
           path="/auth" 
           element={
             <AuthRoute>
-               <GoogleLogin
-              onSuccess={credentialResponse => {
-                const credentialResponseDecoded = jwt_decode(
-                  credentialResponse.credential
-                );
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log('Login Failed');
-              }}
-              useOneTap
-              />
               <Auth />
-              
             </AuthRoute>
           } 
         />

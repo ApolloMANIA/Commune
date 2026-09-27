@@ -19,8 +19,8 @@ export const searchContacts = async (req, res ,next) => {
                 { _id: { $ne: req.userId } },
                 {
                     $or: [
-                        { firstName: regex },
-                        { lastName: regex },
+                        { firstname: regex },
+                        { lastname: regex },
                         { email: regex }
                     ],
                 },
