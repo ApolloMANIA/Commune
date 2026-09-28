@@ -11,6 +11,7 @@ const setupSocket = (server) => {
             ].filter(Boolean),
             methods: ['GET', 'POST'],
             credentials: true,
+            transports: ['websocket', 'polling'],
         },
     });
     

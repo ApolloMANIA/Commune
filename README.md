@@ -92,3 +92,17 @@ npm run dev
 - Keep `ORIGIN` in `server/.env` aligned with the Vite URL (usually `http://localhost:5173`) or CORS will block requests.
 - `server/node_modules` should be installed on the machine that runs the API — native modules like `bcrypt` break if copied from another OS/arch.
 - Google OAuth UI is wired via `@react-oauth/google`; set a real `clientId` in `client/src/main.jsx` if you want that flow.
+
+## Deploy on Render (free)
+
+1. Push this repo to GitHub.
+2. In [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint** → select `Commune`.
+3. When prompted, set:
+   - `DATABASE_URL` — your Atlas URI (`...mongodb.net/commune?...`)
+   - `ORIGIN` — leave a placeholder for now (e.g. `https://commune-web.onrender.com`), then update after the static site URL exists
+   - `VITE_SERVER_URL` — `https://commune-api.onrender.com` (use your real API URL; must include `https://`)
+4. In Atlas → **Network Access**, allow `0.0.0.0/0`.
+5. After both services are live, set `ORIGIN` exactly to the frontend URL and **Manual Deploy** the API once.
+6. Optional custom domain: in Render add your Hostinger domain, then in Hostinger DNS add the CNAME Render shows you.
+
+Free web services sleep after ~15 minutes idle (cold start on next visit).

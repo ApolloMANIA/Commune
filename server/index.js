@@ -13,17 +13,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const databaseURL = process.env.DATABASE_URL;
 
+app.set('trust proxy', 1);
+
+const allowedOrigins = [
+    process.env.ORIGIN,
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+].filter(Boolean);
+
 app.use(
     cors({
-        origin: [
-            process.env.ORIGIN,
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-        ].filter(Boolean),
+        origin: allowedOrigins,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true,
     })
 );
+
+app.get('/health', (_req, res) => {
+    res.status(200).send('ok');
+});
 
 app.use("/uploads/profiles", express.static("uploads/profiles"));
 app.use(cookieParser());
