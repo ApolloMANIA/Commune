@@ -2,13 +2,20 @@ import { Server as SocketIOServer } from "socket.io";
 import Message from "./models/message.model.js";
 
 const setupSocket = (server) => {
+    const allowedOrigins = [
+        process.env.ORIGIN,
+        process.env.FRONTEND_URL,
+        ...(process.env.ORIGINS || '').split(','),
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'https://commune-web.onrender.com',
+    ]
+        .map((origin) => origin?.trim())
+        .filter(Boolean);
+
     const io = new SocketIOServer(server, {
         cors: {
-            origin: [
-                process.env.ORIGIN,
-                "http://localhost:5173",
-                "http://127.0.0.1:5173",
-            ].filter(Boolean),
+            origin: allowedOrigins,
             methods: ['GET', 'POST'],
             credentials: true,
             transports: ['websocket', 'polling'],

@@ -17,13 +17,26 @@ app.set('trust proxy', 1);
 
 const allowedOrigins = [
     process.env.ORIGIN,
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-].filter(Boolean);
+    process.env.FRONTEND_URL,
+    ...(process.env.ORIGINS || '').split(','),
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://commune-web.onrender.com',
+]
+    .map((origin) => origin?.trim())
+    .filter(Boolean);
+
+console.log('CORS allowed origins:', allowedOrigins);
 
 app.use(
     cors({
-        origin: allowedOrigins,
+        origin(origin, callback) {
+            // Allow non-browser / same-origin requests with no Origin header
+            if (!origin || allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+            return callback(new Error(`CORS blocked for origin: ${origin}`));
+        },
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true,
     })
